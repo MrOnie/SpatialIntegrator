@@ -53,6 +53,20 @@ Evaluating performance across varying physical tile resolutions ($112\text{px}$ 
 ![Model Sensitivity Comparison](results/fig3_model_alpha_comparison.png)
 *Figure 3: Sensitivity profiling of Spatial Silhouette coherence as a function of receptive field tile resolution across vision foundation models compared against the RNA-only baseline.*
 
+### 🌍 Cross-Organ Benchmark Suite (5 Reference Systems)
+We evaluated SpatialIntegrator across five diverse clinical and physiological organ architectures from the canonical 10x Visium reference suite. While classic unimodal RNA clustering uniformly degenerates into negative spatial contiguity due to zero-inflation dropouts and overdispersed variance, integrating Owkin's **Phikon** pathology specialist foundation model via Frobenius norm inertia equalization systematically restores positive structural cohesion across every biological scenario:
+
+| Organ System Scenario | Total Spots | RNA-Only SSS | ViT-Base SSS (224px, $\alpha=0.2$) | Phikon SSS (224px, $\alpha=0.2$) | Discovered Domains (Phikon) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Human Breast Cancer (IDC)** | 2,688 | $-0.0792$ | $+0.1600$ | **$+0.1698$** | 23 |
+| **Human Lymph Node** | 4,035 | $-0.2531$ | $+0.1139$ | **$+0.1940$** | 24 |
+| **Human Brain Cortex (DLPFC)** | 4,910 | $-0.1268$ | $+0.0963$ | **$+0.1596$** | 19 |
+| **Adult Mouse Brain (Sagittal)** | 2,702 | $-0.1385$ | $+0.1487$ | **$+0.1804$** | 22 |
+| **Human Heart (Myocardium)** | 4,247 | $-0.1401$ | $+0.1219$ | **$+0.1566$** | 25 |
+
+![Cross-Organ Structural Coherence](results/fig5_multiorgan_comparison.png)
+*Figure 4: Cross-organ Spatial Silhouette contiguity comparisons across five canonical 10x Visium tissue microenvironments. Pathology specialist Phikon embeddings uniformly bridge technical transcript dropouts in complex lymphoid, neural, epidermal, and cardiac architectures.*
+
 ---
 
 ## 💻 Interactive Evaluation Dashboard
