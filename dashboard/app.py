@@ -91,10 +91,10 @@ with st.expander("👉 Step-by-Step Guide: How to run benchmark evaluation examp
     1. **Select Biological Scenario:** On the left sidebar under *1. 🗄️ Data Source*, choose from five curated 10x Visium clinical and physiological reference datasets (Breast Cancer, Lymph Node, Brain Cortex, Whole Mouse Brain, or Heart).
     2. **Instant Data Loading:** Click the primary button **"🧪 Load Selected Benchmark Dataset"**. The platform automatically fetches the raw H&E high-resolution tissue slice and gene count arrays, performs highly variable gene isolation ($k=3000$), and equalizes spectral variance via our Frobenius Norm fuser.
     3. **Select Vision Foundation Model:** Under *2. Pipeline Parameters*, pick your pathology foundation model backbone. We strongly recommend **`phikon`** (distilled on TCGA whole-slide histology images via iBOT self-supervision) for complex oncology and cellular histology.
-    4. **Calibrate Multimodal Balance ($\alpha$):** Adjust the **"RNA Weight (Alpha)"** slider to tune modality synergy:
-       * **$\alpha = 0.2$** *(Recommended Default)*: Assigns 80% weight to H&E morphological architecture (ideal for sharpening contiguous anatomical borders and defining distinct tissue niches).
-       * **$\alpha = 0.5$**: Symmetric balanced concatenation.
-       * **$\alpha = 0.8$**: Transcriptome-dominated representation.
+    4. **Calibrate Multimodal Balance (α):** Adjust the **"RNA Modality Weight (Alpha)"** slider to tune modality synergy:
+       * **α = 0.2** *(Recommended Default)*: Assigns 80% weight to H&E morphological architecture (ideal for sharpening contiguous anatomical borders and defining distinct tissue niches).
+       * **α = 0.5**: Symmetric balanced concatenation.
+       * **α = 0.8**: Transcriptome-dominated representation.
     5. **Execute Multimodal Pipeline:** Click **"⚡ Run Multimodal Pipeline"**. In seconds, the application computes joint representations, evaluates neighborhood graphs, and performs Leiden clustering.
     6. **Validate & Export Biomarkers:** Navigate across the bottom interactive tabs to inspect histology domain overlays, analyze Joint UMAP embeddings, and execute non-parametric **Wilcoxon Rank-Sum tests** to discover and download table of differentially expressed genes (DEGs) to CSV.
     """)
