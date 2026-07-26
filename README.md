@@ -64,9 +64,18 @@ streamlit run dashboard/app.py
 
 ![SpatialIntegrator Interactive Streamlit Dashboard](images/StreamlitDashboard_main.png)
 
-* **Instant Test Mode:** Simply click **"🧪 Load Test Dataset (Visium H&E)"** inside the left sidebar to automatically download and evaluate the standard Squidpy breast cancer slide without local file setup.
-* **Custom Dataset Processing:** Simply input any directory path conforming to standard 10x Space Ranger formats (`filtered_feature_bc_matrix.h5`, `spatial/tissue_hires_image.png`, `spatial/scalefactors_json.json`).
-* **Interactive Export:** Download computed spatial biomarkers (DEGs) via the non-parametric Wilcoxon rank-sum test with Benjamini-Hochberg FDR correction directly to CSV format.
+### 🧪 Multi-Scenario Benchmark Vault
+The interactive dashboard features a built-in **Benchmark Selector** enabling instantaneous, zero-setup evaluation across five distinct biological and clinical organ microenvironments:
+1. **Human Breast Cancer (Invasive Ductal Carcinoma):** Identifies tumor invasion perimeters (*ERBB2*, *FASN*) against desmoplastic fibrous stroma (*MMP11*, *COL1A1*).
+2. **Human Lymph Node (Immunology & Secondary Lymphoid Organs):** Resolves germinal centers, T-cell rich paracortex zones, and lymphoid follicles—the premier benchmark for evaluating naturally dispersed multifocal anatomical architectures without artificial over-smoothing.
+3. **Human Brain Cortex (Dorsolateral Prefrontal Cortex):** Maps fine cortical laminar organization (Layers L1 through L6) and subcortical deep white matter neuronal tracts.
+4. **Adult Mouse Brain (Whole-Brain Sagittal Architecture):** Evaluates complex multi-regional neuroanatomy across the hippocampus, thalamus, cerebellum, and cerebral ventricles.
+5. **Human Heart (Cardiomyocyte & Fibrosing Myocardium):** Profiles cardiomyocyte myofibril bundle alignment and extracellular interstitial fibrosis niches.
+
+* **Instant Test Execution:** Simply choose any scenario from the sidebar dropdown and click **"🧪 Load Selected Benchmark Dataset"** to automatically fetch high-resolution H&E tissue histology and transcriptional count arrays, identify top highly variable genes ($k=3000$), and execute algebraic Frobenius norm fusion!
+* **Custom Local Dataset Support:** Seamlessly import user-provided 10x Visium or Space Ranger formatted output directories (`filtered_feature_bc_matrix.h5`, `spatial/tissue_hires_image.png`, `spatial/scalefactors_json.json`).
+* **Interactive DEG Export:** Compute non-parametric Wilcoxon rank-sum differential expression tests with Benjamini-Hochberg FDR correction and download validated spatial biomarker gene tables directly to CSV format.
+
 
 ---
 

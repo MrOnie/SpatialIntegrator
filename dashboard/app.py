@@ -25,12 +25,42 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
-# RESOURCE CACHING (Performance Optimizations)
+# RESOURCE CACHING (Performance Optimizations & Dataset Vault)
 # -----------------------------------------------------------------------------
+BENCHMARK_SCENARIOS = {
+    "Human Breast Cancer (Invasive Ductal Carcinoma)": {
+        "id": "V1_Breast_Cancer_Block_A_Section_1",
+        "desc": "**Oncology & Tumor Microenvironment:** Differentiates invasive ductal carcinomatosis lobulate fronts from desmoplastic reactive stroma and extracellular connective matrix (biomarkers: *ERBB2*, *MMP11*, *FASN*)."
+    },
+    "Human Lymph Node (Immunology & Architecture)": {
+        "id": "V1_Human_Lymph_Node",
+        "desc": "**Immunology & Secondary Lymphoid Organs:** Resolves germinal centers, T-cell rich paracortex zones, and lymphoid follicles. Ideal benchmark for validating naturally dispersed, multifocal physiological tissue domains without artificial smoothing."
+    },
+    "Human Brain Cortex (Dorsolateral Prefrontal Cortex)": {
+        "id": "V1_Human_Brain_Section_1",
+        "desc": "**Neuropathology & Neuroscience:** Maps fine cortical laminar organization (Layers L1 through L6) and subcortical deep white matter neuronal tracts."
+    },
+    "Adult Mouse Brain (Whole-Brain Sagittal Section)": {
+        "id": "V1_Adult_Mouse_Brain",
+        "desc": "**Complex Multi-Regional Neuroanatomy:** Complete macro-architectural mapping of the hippocampus, thalamus, cerebellum, and cerebral ventricles. The gold standard analytical benchmark in computational spatial omics literature."
+    },
+    "Human Heart (Cardiomyocyte & Fibrotic Myocardium)": {
+        "id": "V1_Human_Heart",
+        "desc": "**Cardiovascular Precision Medicine:** Evaluates cardiomyocyte structural myofibril orientation, vascular architecture, and interstitial fibrosis niches."
+    }
+}
+
 @st.cache_resource(show_spinner=False)
-def load_test_visium_dataset():
-    """Downloads and processes the official benchmark Visium dataset (Human Breast Cancer from Squidpy)."""
-    adata = sq.datasets.visium_hne_adata()
+def load_benchmark_dataset(dataset_id: str):
+    """Downloads and processes standardized benchmark Visium datasets from 10x Genomics via Squidpy."""
+    if dataset_id == "V1_Breast_Cancer_Block_A_Section_1":
+        adata = sq.datasets.visium_hne_adata()
+    else:
+        adata = sq.datasets.visium(dataset_id, include_hires_tiff=False)
+        
+    adata.var_names_make_unique()
+    
+    # Standard Scanpy normalization and log-transformation
     sc.pp.normalize_total(adata)
     sc.pp.log1p(adata)
     sc.pp.highly_variable_genes(adata, flavor="seurat", n_top_genes=3000)
@@ -52,19 +82,21 @@ def get_vision_embedder(model_name: str, hf_token: str = None):
 # HEADER & STEP-BY-STEP GUIDED WORKFLOW
 # -----------------------------------------------------------------------------
 st.title("🔬 SpatialIntegrator")
-st.markdown("#### Multimodal Integration Platform for Spatial Transcriptomics & Histopathology H&E")
+st.markdown("#### Foundation Model-Driven Multimodal Integration Platform for Spatial Transcriptomics & Histopathology")
 
-with st.expander("👉 Step-by-Step Guide: How to run a fast benchmark example (Click to toggle)", expanded=True):
+with st.expander("👉 Step-by-Step Guide: How to run benchmark evaluation examples (Click to toggle)", expanded=True):
     st.markdown("""
-    **Welcome to the interactive evaluation dashboard!** To test the framework without local dataset configuration, follow these straightforward steps:
+    **Welcome to the interactive evaluation dashboard!** You can instantly explore SpatialIntegrator across diverse tissue organ systems without needing any local dataset configuration:
     
-    1. **Instant Data Loading:** On the left sidebar under *1. Data Source*, click the primary button **"🧪 Load Test Dataset (Visium H&E)"**. This instantaneously fetches and preprocesses a standardized 10x Visium human breast cancer histology slice with RNA expression profiles.
-    2. **Select Vision Foundation Model:** Under *2. Pipeline Parameters*, choose your visual backbone. We strongly recommend **`phikon`** (specifically distilled on TCGA pathology whole-slide images) or **`vit-base`** (general-purpose baseline).
-    3. **Calibrate Multimodal Balance (α):** Adjust the **"RNA Weight (Alpha)"** slider to dictate sensory dominance.
-       * **α = 0.2**: Gives 80% importance to H&E morphological architecture (ideal for defining smooth, contiguous tissue anatomical boundaries).
-       * **α = 0.8**: Gives 80% importance to transcriptional variance.
-    4. **Execute Pipeline:** Click **"⚡ Run Multimodal Pipeline"**. The platform will extract localized histological image patches, compute foundational representations, algebraically fuse modalities, and compute Leiden graph clustering.
-    5. **Explore & Export Results:** Navigate across the bottom interactive tabs to evaluate spatial anatomical overlays, inspect Joint UMAP embedding manifolds, and export validated differentially expressed biomarker gene tables (DEGs) to CSV.
+    1. **Select Biological Scenario:** On the left sidebar under *1. 🗄️ Data Source*, choose from five curated 10x Visium clinical and physiological reference datasets (Breast Cancer, Lymph Node, Brain Cortex, Whole Mouse Brain, or Heart).
+    2. **Instant Data Loading:** Click the primary button **"🧪 Load Selected Benchmark Dataset"**. The platform automatically fetches the raw H&E high-resolution tissue slice and gene count arrays, performs highly variable gene isolation ($k=3000$), and equalizes spectral variance via our Frobenius Norm fuser.
+    3. **Select Vision Foundation Model:** Under *2. Pipeline Parameters*, pick your pathology foundation model backbone. We strongly recommend **`phikon`** (distilled on TCGA whole-slide histology images via iBOT self-supervision) for complex oncology and cellular histology.
+    4. **Calibrate Multimodal Balance ($\alpha$):** Adjust the **"RNA Weight (Alpha)"** slider to tune modality synergy:
+       * **$\alpha = 0.2$** *(Recommended Default)*: Assigns 80% weight to H&E morphological architecture (ideal for sharpening contiguous anatomical borders and defining distinct tissue niches).
+       * **$\alpha = 0.5$**: Symmetric balanced concatenation.
+       * **$\alpha = 0.8$**: Transcriptome-dominated representation.
+    5. **Execute Multimodal Pipeline:** Click **"⚡ Run Multimodal Pipeline"**. In seconds, the application computes joint representations, evaluates neighborhood graphs, and performs Leiden clustering.
+    6. **Validate & Export Biomarkers:** Navigate across the bottom interactive tabs to inspect histology domain overlays, analyze Joint UMAP embeddings, and execute non-parametric **Wilcoxon Rank-Sum tests** to discover and download table of differentially expressed genes (DEGs) to CSV.
     """)
 
 # -----------------------------------------------------------------------------
@@ -73,24 +105,36 @@ with st.expander("👉 Step-by-Step Guide: How to run a fast benchmark example (
 with st.sidebar:
     st.header("1. 🗄️ Data Source")
     
-    # Quick guided loading button
-    if st.button("🧪 Load Test Dataset (Visium H&E)", type="primary"):
-        with st.spinner("Downloading and identifying highly variable genes..."):
+    # Multi-scenario Benchmark Selector
+    st.subheader("🧪 Official Benchmark Datasets")
+    selected_scenario_name = st.selectbox(
+        "Select Biological Test Scenario:",
+        list(BENCHMARK_SCENARIOS.keys()),
+        index=0,
+        help="Choose a pre-configured 10x Genomics Visium benchmark dataset."
+    )
+    
+    selected_info = BENCHMARK_SCENARIOS[selected_scenario_name]
+    st.markdown(f"<div style='font-size: 0.85em; background-color: rgba(255, 255, 255, 0.05); padding: 8px; border-radius: 5px; margin-bottom: 10px;'>{selected_info['desc']}</div>", unsafe_allow_html=True)
+    
+    if st.button("🧪 Load Selected Benchmark Dataset", type="primary", use_container_width=True):
+        with st.spinner(f"Downloading & processing {selected_scenario_name}..."):
             try:
-                dataset, full_adata = load_test_visium_dataset()
+                dataset, full_adata = load_benchmark_dataset(selected_info["id"])
                 st.session_state['dataset'] = dataset
                 st.session_state['full_adata'] = full_adata
-                st.session_state['dataset_source'] = "Visium Human Breast Cancer (Squidpy)"
-                st.success("Test dataset loaded successfully!")
+                st.session_state['dataset_source'] = selected_scenario_name
+                st.success("Benchmark dataset loaded successfully!")
             except Exception as e:
                 st.error(f"Error loading benchmark dataset: {e}")
 
     st.markdown("---")
-    st.caption("Or specify a local directory (10x Visium formatted format):")
-    dataset_path = st.text_input("Visium directory path", placeholder="C:/path/to/visium/data", label_visibility="collapsed")
-    if st.button("📂 Load Local Directory"):
+    st.subheader("📂 Custom Local Visium Data")
+    st.caption("Or specify a local directory (10x Genomics Visium standard folder format):")
+    dataset_path = st.text_input("Visium directory path", placeholder="C:/path/to/visium_output", label_visibility="collapsed")
+    if st.button("📂 Load Local Directory", use_container_width=True):
         if os.path.exists(dataset_path):
-            with st.spinner("Processing count matrix and spatial coordinates..."):
+            with st.spinner("Processing local count matrix and spatial coordinates..."):
                 try:
                     ds = SpatialDataset.from_visium(dataset_path)
                     ds.preprocess_rna()
@@ -99,11 +143,11 @@ with st.sidebar:
                     st.session_state['dataset_source'] = f"Local: {os.path.basename(dataset_path)}"
                     st.success("Local dataset imported successfully!")
                 except Exception as e:
-                    st.error(f"Error processing directory: {e}")
+                    st.error(f"Error importing local dataset: {e}")
         else:
-            st.error("The specified directory path does not exist.")
-            
+            st.warning("Please provide a valid local directory path.")
     st.markdown("---")
+            
     st.header("2. ⚙️ Pipeline Parameters")
     
     model_choice = st.selectbox(
