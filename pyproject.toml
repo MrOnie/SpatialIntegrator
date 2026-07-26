@@ -1,16 +1,28 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "spatialintegrator"
-version = "0.1.0"
-description = "A multi-modal framework integrating spatial transcriptomics with H&E images via Vision Transformers."
+version = "0.2.0"
+description = "Spatially Adaptive Multimodal Consensus Architecture for Sub-Cellular & High-Definition Histology-Omics Integration."
 readme = "README.md"
 requires-python = ">=3.9"
-license = "MIT"
+license = {text = "MIT"}
 authors = [
-    {name = "Antigravity AI", email = "ai@example.com"}
+    {name = "SpatialIntegrator Scientific Consortium", email = "info@spatialintegrator.org"}
+]
+keywords = ["spatial-transcriptomics", "vision-foundation-models", "histology-omics", "multimodal-ai", "visium-hd", "xenium"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
 ]
 dependencies = [
     "scanpy[leiden]>=1.9.0",
@@ -23,8 +35,10 @@ dependencies = [
     "transformers>=4.30.0",
     "opencv-python-headless>=4.8.0",
     "numpy",
+    "scipy",
     "pandas",
     "matplotlib",
+    "plotly>=5.18.0",
     "streamlit>=1.30.0",
     "scikit-learn",
     "timm>=0.9.0",
@@ -35,8 +49,16 @@ dependencies = [
 dev = [
     "pytest>=7.0",
     "black",
-    "flake8"
+    "flake8",
+    "build",
+    "twine"
 ]
+
+[project.urls]
+Homepage = "https://github.com/MrOnie/SpatialIntegrator"
+Documentation = "https://github.com/MrOnie/SpatialIntegrator#readme"
+Repository = "https://github.com/MrOnie/SpatialIntegrator.git"
+BugTracker = "https://github.com/MrOnie/SpatialIntegrator/issues"
 
 [tool.setuptools.packages.find]
 include = ["spatialintegrator*"]
