@@ -1,0 +1,30 @@
+[theme]
+base = "dark"
+primaryColor = "#8b5cf6"           # Vibrant biomedical violet
+backgroundColor = "#0f172a"        # Deep Slate (Tailwind dark)
+secondaryBackgroundColor = "#1e293b"  # Card background
+textColor = "#f8fafc"              # Crisp light slate
+borderColor = "#334155"            # Clean divider borders
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "8px"
+buttonRadius = "8px"
+
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+codeFontSize = "0.875rem"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["30px", "24px", "20px", "16px", "14px", "13px"]
+headingFontWeights = [700, 600, 600, 500, 500, 500]
+linkUnderline = false
+
+# Custom semantic chart colors
+chartCategoricalColors = ["#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444", "#ec4899", "#3b82f6"]
+
+[theme.sidebar]
+backgroundColor = "#0f172a"
+secondaryBackgroundColor = "#1e293b"
+borderColor = "#334155"
+textColor = "#e2e8f0"
+primaryColor = "#06b6d4"           # Cyan accents in sidebar

@@ -25,6 +25,6 @@ def cluster_multimodal(adata: AnnData, joint_representation: np.ndarray, key_add
     sc.tl.umap(adata, neighbors_key='joint')
     
     # Run Leiden clustering
-    sc.tl.leiden(adata, resolution=resolution, neighbors_key='joint', key_added=key_added)
+    sc.tl.leiden(adata, resolution=resolution, neighbors_key='joint', key_added=key_added, flavor='igraph', n_iterations=2, directed=False)
     
     return adata

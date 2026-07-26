@@ -31,7 +31,7 @@ def main():
     # 1. CLASSICAL CLUSTERING (RNA ONLY)
     print("Running classical RNA clustering...")
     sc.pp.neighbors(adata_rna, use_rep='X_pca', key_added='rna_neighbors')
-    sc.tl.leiden(adata_rna, resolution=1.0, neighbors_key='rna_neighbors', key_added='rna_leiden')
+    sc.tl.leiden(adata_rna, resolution=1.0, neighbors_key='rna_neighbors', key_added='rna_leiden', flavor='igraph', n_iterations=2, directed=False)
     
     sil_rna = silhouette_score(adata_rna.obsm['spatial'], adata_rna.obs['rna_leiden'])
     print(f"-> Spatial Silhouette Score (RNA Only): {sil_rna:.4f}")
