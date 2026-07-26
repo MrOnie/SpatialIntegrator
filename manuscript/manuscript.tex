@@ -158,7 +158,7 @@ To evaluate whether our multimodal fusion methodology generalizes beyond breast 
 
 \begin{table}[h!]
 \centering
-\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c}
 \toprule
 \multirow{2}{*}{\textbf{Organ System Scenario}} & \multirow{2}{*}{\textbf{Spots}} & \multicolumn{2}{c}{\textbf{RNA-Only Baseline}} & \multicolumn{2}{c}{\textbf{ViT-Base (224px)}} & \multicolumn{2}{c}{\textbf{Phikon Specialist (224px)}} \\
@@ -171,7 +171,8 @@ Human Brain Cortex (DLPFC) & 4,910 & 11 & -0.1268 & 21 & 0.1168 & 20 & \textbf{0
 Adult Mouse Brain (Sagittal) & 2,702 & 18 & -0.1385 & 21 & 0.1415 & 24 & \textbf{0.1816} \\
 Human Heart (Myocardium) & 4,247 & 11 & -0.1401 & 18 & 0.1306 & 23 & \textbf{0.1728} \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \caption{Cross-organ validation of Spatial Silhouette contiguity scores (SSS) and discovered tissue domains (Dom.) across five standard 10x Visium reference microenvironments. Across all physiological systems, Frobenius norm inertia equalization with pathology specialist Phikon systematically overcomes transcriptomic dropout dissociation.}
 \label{tab:multiorgan_benchmark}
 \end{table}

@@ -35,23 +35,23 @@ Evaluated on official standardized human infiltrating ductal carcinoma (Visium H
 > [!IMPORTANT]
 > **Key Insight:** Structuring the feature space with morphological priors ($\alpha = 0.2$, tile resolution $224\text{px}$) isolates tumor perimeter invasive fronts expressing elevated **ERBB2 (HER2)**, **FASN**, and extracellular matrix remodeling biomarkers (**MMP11**, **COL1A1**).
 
-### 🗺️ High-Resolution Tissue Domain Segmentation
-By leveraging self-supervised digital pathology backbones, SpatialIntegrator effectively smooths technical sequencing dropouts to reveal true biological structures:
-
-![Spatial Domain Grid Comparison](results/fig2_spatial_domain_maps_comparison.png)
-*Figure 1: Comparative histological domain mapping across standard unimodal RNA clustering, generalist ViT-Base, and pathology-specialized Phikon representations across intact H&E whole-slide histology.*
-
-### 🧬 Biomarker Discovery & Microenvironmental Validation
-Morphology-informed spatial domain identification preserves molecular specificities while resolving intricate tumor microenvironments (TMEs):
-
-![Biomarker Dotplot Validation](results/fig3_biomarker_deg_validation_dotplot.png)
-*Figure 2: Dotplot mapping mean expression levels and percentage of expressing spots for top differentially expressed biomarker genes across multimodal spatial domains (Phikon backbone, 224px tile resolution). Note the precise identification of ERBB2/HER2+ invasive fronts and MMP11+ reactive extracellular matrix remodelers.*
-
 ### ⚖️ Receptive Field & Modality Sensitivity Analysis
-Evaluating performance across varying physical tile resolutions ($112\text{px}$ to $336\text{px}$) confirms the operational advantage of computational pathology specialization:
+Evaluating performance across varying physical tile resolutions ($112\text{px}$ to $336\text{px}$) confirms the operational advantage of computational pathology specialization over conventional generalist baselines:
 
 ![Model Sensitivity Comparison](results/fig1_model_sensitivity_analysis.png)
-*Figure 3: Sensitivity profiling of Spatial Silhouette coherence as a function of receptive field tile resolution across vision foundation models compared against the RNA-only baseline.*
+*Figure 1: Sensitivity profiling of Spatial Silhouette coherence as a function of receptive field tile resolution across vision foundation models compared against the unimodal RNA-only baseline.*
+
+### 🗺️ High-Resolution Tissue Domain Segmentation
+By leveraging self-supervised digital pathology backbones, SpatialIntegrator effectively smooths technical sequencing dropouts to reveal true biological microenvironmental structures:
+
+![Spatial Domain Grid Comparison](results/fig2_spatial_domain_maps_comparison.png)
+*Figure 2: Comparative histological domain mapping across standard unimodal RNA clustering, generalist ViT-Base, and pathology-specialized Phikon representations over intact H&E whole-slide histology.*
+
+### 🧬 Biomarker Discovery & Microenvironmental Validation
+Morphology-informed spatial domain identification preserves gene expression molecular specificities while precisely resolving intricate tumor microenvironments (TMEs):
+
+![Biomarker Dotplot Validation](results/fig3_biomarker_deg_validation_dotplot.png)
+*Figure 3: Dotplot mapping mean expression levels and percentage of expressing spots for top differentially expressed biomarker genes across multimodal spatial domains (Phikon backbone, 224px tile resolution). Note the precise identification of ERBB2/HER2+ invasive fronts and MMP11+ reactive extracellular matrix remodelers.*
 
 ### 🌍 Cross-Organ Benchmark Suite (5 Reference Systems)
 We evaluated SpatialIntegrator across five diverse clinical and physiological organ architectures from the canonical 10x Visium reference suite. While classic unimodal RNA clustering uniformly degenerates into negative spatial contiguity due to zero-inflation dropouts and overdispersed variance, integrating Owkin's **Phikon** pathology specialist foundation model via Frobenius norm inertia equalization systematically restores positive structural cohesion across every biological scenario:
@@ -120,16 +120,18 @@ While `phikon` and `vit-base` are accessible immediately without credential veri
 
 ## 🔬 Reproducing Experimental Benchmarks & Manuscript Figures
 
-All quantitative experimental tables and high-resolution print figures generated for the accompanying Q1 scientific publication can be regenerated cleanly via our command-line benchmarking suite:
+All quantitative experimental tables and high-resolution print figures generated for the accompanying Q1 scientific publication can be regenerated cleanly via our standardized command-line benchmarking suite:
 
 ```bash
-# 1. Run full grid comparison (Phikon vs ViT vs RNA across resolutions & weights)
-python benchmarking/run_comprehensive_experiments.py
+# Option A: Execute master orchestration suite (runs all grid tests, biomarker analyses & multi-organ validation in ~75 mins)
+python benchmarking/run_all_experiments.py
 
-# 2. Generate publication 300 DPI biomarker differential dotplots (Figure 2)
-python benchmarking/generate_biomarker_figure.py
+# Option B: Execute individual benchmark modules independently
+python benchmarking/run_comprehensive_experiments.py  # Generates Figure 1, Figure 2, and Table 1
+python benchmarking/generate_biomarker_figure.py      # Generates Figure 3 (Wilcoxon DEG dotplot)
+python benchmarking/run_multiorgan_experiments.py     # Generates Figure 4 and Table 2 (5-Organ Cross Validation)
 ```
-Outputs and quantitative figures are exported directly to the `results/` directory.
+All outputs, CSV tables, LaTeX tabular formatting, and 300 DPI figures are exported directly to the `results/` directory with publication-ready standardized filenames (`fig1_...` to `fig4_...` and `table1_...` / `table2_...`).
 
 ---
 
