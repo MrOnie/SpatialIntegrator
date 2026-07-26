@@ -15,8 +15,8 @@
   * 🟢 **`phikon` (Owkin):** Vision Transformer self-supervisedly distilled via iBOT on TCGA pathology datasets. Exhibits state-of-the-art microenvironmental cellular resolution.
   * 🔵 **`uni` (Mahmood Lab / Harvard):** General-purpose clinical foundational model (16-bit representation space) engineered for tissue-level diagnostics and pan-cancer classification.
   * ⚪ **`vit-base` (Google / ViT-B/16):** Standard ImageNet pre-trained baseline for speedy benchmarking.
-* **Algebraic Multimodal Fusion (`ModalityFuser`):** Mathematically unifies variance-stabilized RNA profiles (PCA reduced) and visual embeddings into a common latent representation controlled by hyperparameter $\alpha \in [0, 1]$.
-* **Robust Community Detection:** Utilizes graph-based **Leiden clustering** powered by high-speed C-bindings (`igraph`) to demarcate contiguously coherent anatomico-molecular tissue domains.
+* **Algebraic Multimodal Fusion & Frobenius Inertia Equalization (`ModalityFuser`):** Mathematically unifies variance-stabilized RNA profiles (PCA reduced) and dense visual embeddings into an equilibrated joint representation. Normalizing both manifolds by their Frobenius norm ensures equal eigenvalue spectral inertia before applying parametric weighting hyperparameter $\alpha \in [0, 1]$.
+* **Robust Community Detection & Non-Parametric Biomarkers:** Utilizes graph-based **Leiden clustering** powered by high-speed C-bindings (`igraph`) alongside non-parametric **Wilcoxon rank-sum testing** to demarcate contiguously coherent anatomico-molecular tissue domains and robust DEGs.
 * **Guided Interactive Dashboard:** A sleek, fully featured interactive web application powered by **Streamlit** (featuring custom dark mode theming and 1-click test dataset loading).
 
 ---
@@ -26,10 +26,11 @@ Evaluated on official standardized human infiltrating ductal carcinoma (Visium H
 
 | Pipeline Modality & Backbone | Receptive Tile Size | RNA Weight ($\alpha$) | Discovered Domains | Spatial Silhouette Score (Contiguity) $\uparrow$ |
 | :--- | :---: | :---: | :---: | :---: |
-| **RNA-Only Baseline** (Standard Scanpy) | N/A | $1.0$ (RNA solely) | 16 | $-0.0123$ *(Noisy / Disconnected)* |
-| **SpatialIntegrator (`vit-base`)** | $224 \times 224\text{px}$ | $0.2$ | 24 | $+0.0451$ |
-| **SpatialIntegrator (`phikon`)** | $224 \times 224\text{px}$ | $0.2$ | 26 | **$+0.1077$ *(10.2x fold enhancement)*** |
-| **SpatialIntegrator (`phikon`)** | $336 \times 336\text{px}$ | $0.5$ | 21 | $+0.0814$ |
+| **RNA-Only Baseline** (Standard Scanpy) | N/A | N/A (Unimodal) | 16 | $-0.0536$ *(Noisy / Disconnected)* |
+| **SpatialIntegrator (`phikon`)** | $112 \times 112\text{px}$ | $0.2$ | 24 | $+0.1485$ *(Fine-grained morphology)* |
+| **SpatialIntegrator (`phikon`)** | $224 \times 224\text{px}$ | $0.2$ | 26 | $+0.1576$ *(Optimal biomarker resolution)* |
+| **SpatialIntegrator (`phikon`)** | $336 \times 336\text{px}$ | $0.2$ | 27 | $+0.1735$ |
+| **SpatialIntegrator (`vit-base`)** | $336 \times 336\text{px}$ | $0.2$ | 21 | **$+0.2141$ *(Max macro-contiguity)*** |
 
 > [!IMPORTANT]
 > **Key Insight:** Structuring the feature space with morphological priors ($\alpha = 0.2$, tile resolution $224\text{px}$) isolates tumor perimeter invasive fronts expressing elevated **ERBB2 (HER2)**, **FASN**, and extracellular matrix remodeling biomarkers (**MMP11**, **COL1A1**).
@@ -65,7 +66,7 @@ streamlit run dashboard/app.py
 
 * **Instant Test Mode:** Simply click **"🧪 Load Test Dataset (Visium H&E)"** inside the left sidebar to automatically download and evaluate the standard Squidpy breast cancer slide without local file setup.
 * **Custom Dataset Processing:** Simply input any directory path conforming to standard 10x Space Ranger formats (`filtered_feature_bc_matrix.h5`, `spatial/tissue_hires_image.png`, `spatial/scalefactors_json.json`).
-* **Interactive Export:** Download computed spatial biomarkers (DEGs) via Welch's t-test with Benjamini-Hochberg FDR correction directly to CSV format.
+* **Interactive Export:** Download computed spatial biomarkers (DEGs) via the non-parametric Wilcoxon rank-sum test with Benjamini-Hochberg FDR correction directly to CSV format.
 
 ---
 

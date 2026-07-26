@@ -36,8 +36,8 @@ def main():
     sil_rna = silhouette_score(adata_rna.obsm['spatial'], adata_rna.obs['rna_leiden'])
     print(f"-> Spatial Silhouette Score (RNA Only): {sil_rna:.4f}")
     
-    # RNA Biomarkers
-    sc.tl.rank_genes_groups(adata_rna, 'rna_leiden', method='t-test', key_added='rank_genes_rna')
+    # RNA Biomarkers (Wilcoxon Rank-Sum test)
+    sc.tl.rank_genes_groups(adata_rna, 'rna_leiden', method='wilcoxon', key_added='rank_genes_rna')
     adata.obs['rna_leiden'] = adata_rna.obs['rna_leiden']
     
     # Initialize SpatialIntegrator
@@ -77,9 +77,9 @@ def main():
         scores[f'Multi_{patch_size}'] = sil_multi
         print(f"-> Spatial Silhouette Score (Multimodal {patch_size}px): {sil_multi:.4f}")
         
-        # Find marker genes for these new clusters
-        print("Calculating differentially expressed genes (Biomarkers)...")
-        sc.tl.rank_genes_groups(adata_res, key_added, method='t-test', key_added=f'rank_genes_{patch_size}')
+        # Find marker genes for these new clusters using non-parametric Wilcoxon test
+        print("Calculating differentially expressed genes (Biomarkers via Wilcoxon test)...")
+        sc.tl.rank_genes_groups(adata_res, key_added, method='wilcoxon', key_added=f'rank_genes_{patch_size}')
         
         adata.obs[key_added] = adata_res.obs[key_added]
 

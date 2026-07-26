@@ -69,9 +69,9 @@ def main():
     sil_score = silhouette_score(adata_res.obsm['spatial'], adata_res.obs[key_added])
     print(f" -> Resulting Spatial Silhouette Score: {sil_score:.4f} ({len(adata_res.obs[key_added].unique())} domains)")
     
-    print("7. Calculating differentially expressed gene biomarkers (t-test)...")
+    print("7. Calculating differentially expressed gene biomarkers (Wilcoxon rank-sum test)...")
     rank_key = f'rank_genes_{model_name}_{patch_size}'
-    sc.tl.rank_genes_groups(adata_res, key_added, method='t-test', key_added=rank_key)
+    sc.tl.rank_genes_groups(adata_res, key_added, method='wilcoxon', key_added=rank_key)
     
     print("8. Plotting Biomarker Dotplot (Figure 2)...")
     # Set up high resolution figure formatting

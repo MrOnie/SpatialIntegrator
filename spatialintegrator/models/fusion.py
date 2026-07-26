@@ -42,7 +42,17 @@ class ModalityFuser:
         else:
             img_reduced = img_scaled
             
-        # Weighted concatenation
-        joint_representation = np.hstack([alpha * rna_reduced, (1 - alpha) * img_reduced])
+        # Equalize spectral total variance (Frobenius norm inertia equalization)
+        # Standard z-score normalization on raw features does not equilibrate cumulative variance explained after PCA reduction.
+        # Normalizing each latent space by its Frobenius norm prevents high-inertia modalities from skewing Euclidean distances during downstream k-NN graph construction.
+        norm_r = np.linalg.norm(rna_reduced, ord='fro') + 1e-8
+        norm_v = np.linalg.norm(img_reduced, ord='fro') + 1e-8
+        target_norm = np.sqrt(rna_matrix.shape[0] * self.n_components)
+        
+        rna_eq = (rna_reduced / norm_r) * target_norm
+        img_eq = (img_reduced / norm_v) * target_norm
+            
+        # Weighted concatenation on algebraically equilibrated subspaces
+        joint_representation = np.hstack([alpha * rna_eq, (1 - alpha) * img_eq])
         
         return joint_representation

@@ -166,9 +166,9 @@ if 'dataset' in st.session_state:
                 # Compute spatial silhouette index for contiguity evaluation
                 sil_score = silhouette_score(adata_res.obsm['spatial'], adata_res.obs[key_added])
                 
-                # Calculate differentially expressed genes (DEGs) per domain via Welch's t-test
+                # Calculate differentially expressed genes (DEGs) per domain via non-parametric Wilcoxon rank-sum test
                 rank_key = "biomarkers_deg"
-                sc.tl.rank_genes_groups(adata_res, key_added, method="t-test", key_added=rank_key, n_genes=10)
+                sc.tl.rank_genes_groups(adata_res, key_added, method="wilcoxon", key_added=rank_key, n_genes=10)
                 
                 # Format biomarkers as a clean Pandas DataFrame
                 result_deg = adata_res.uns[rank_key]
@@ -237,7 +237,7 @@ if 'adata_res' in st.session_state:
     with tab3:
         with st.container(border=True):
             st.markdown("#### Top Differentially Expressed Biomarkers per Domain (DEGs)")
-            st.caption("Computed using Welch's t-test with Benjamini-Hochberg false discovery rate (FDR) correction against all remaining spatial regions.")
+            st.caption("Computed using the non-parametric Wilcoxon rank-sum test (Mann-Whitney U) with Benjamini-Hochberg false discovery rate (FDR) correction against all remaining spatial regions, accounting for sparse zero-inflated omics distributions.")
             
             df_deg = st.session_state['df_deg']
             st.dataframe(df_deg)
