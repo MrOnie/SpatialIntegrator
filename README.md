@@ -15,9 +15,25 @@
   * 🟢 **`phikon` (Owkin):** Vision Transformer self-supervisedly distilled via iBOT on TCGA pathology datasets. Exhibits state-of-the-art microenvironmental cellular resolution.
   * 🔵 **`uni` (Mahmood Lab / Harvard):** General-purpose clinical foundational model (16-bit representation space) engineered for tissue-level diagnostics and pan-cancer classification.
   * ⚪ **`vit-base` (Google / ViT-B/16):** Standard ImageNet pre-trained baseline for speedy benchmarking.
-* **Algebraic Multimodal Fusion & Frobenius Inertia Equalization (`ModalityFuser`):** Mathematically unifies variance-stabilized RNA profiles (PCA reduced) and dense visual embeddings into an equilibrated joint representation. Normalizing both manifolds by their Frobenius norm ensures equal eigenvalue spectral inertia before applying parametric weighting hyperparameter $\alpha \in [0, 1]$.
+* **Algebraic Multimodal Fusion & Frobenius Inertia Equalization (`ModalityFuser`):** Mathematically unifies variance-stabilized RNA profiles (PCA reduced) and dense visual embeddings into an equilibrated joint representation. Normalizing both manifolds by their Frobenius norm ensures equal eigenvalue spectral inertia before applying parametric weighting.
 * **Robust Community Detection & Non-Parametric Biomarkers:** Utilizes graph-based **Leiden clustering** powered by high-speed C-bindings (`igraph`) alongside non-parametric **Wilcoxon rank-sum testing** to demarcate contiguously coherent anatomico-molecular tissue domains and robust DEGs.
-* **Guided Interactive Dashboard:** A sleek, fully featured interactive web application powered by **Streamlit** (featuring custom dark mode theming and 1-click test dataset loading).
+* **Guided Interactive Dashboard:** A sleek, fully featured interactive web application powered by **Streamlit** and **Plotly** (featuring custom dark mode theming, live geo-spatial exploration, and 1-click test dataset loading).
+
+---
+
+## ⚡ What's New in SpatialIntegrator V2 (Active Branch)
+This development branch introduces next-generation multi-resolution algorithms and executive reporting workflows designed for high-impact computational biology:
+* 🧠 **Spatially Adaptive Modality Dominant Engine ($\alpha_i$):** Moves beyond rigid, static global weighting ($\alpha$). By measuring localized **Transcriptional Shannon Entropy** ($H_i^{\text{RNA}}$) against deep **Morphological Textural Distinctiveness** ($S_i^{\text{IMG}}$), V2 dynamically regulates multimodal dominance independently for every individual spatial observation. In undifferentiated tumor cellular zones, transcriptional weights automatically scale up ($\alpha_i \to 0.95$), while zero-inflated extracellular stroma seamlessly defaults to foundation morphology ($\alpha_i \to 0.05$).
+* 🔬 **Sub-Cellular Visium HD & Xenium Multi-Resolution Architecture:** Natively ingests ultra-dense spatial arrays with automated division-by-zero omics drop-out protection:
+  * **10x Visium HD:** Supports square grid bin aggregation across $2\,\mu\text{m}$, $8\,\mu\text{m}$, and $16\,\mu\text{m}$ spatial resolutions via `SpatialDataset.from_visium_hd()`.
+  * **10x Xenium & Sub-Cellular In Situ:** Directly loads multiplexed single-cell nuclear centroids and cell segmentation boundaries via `SpatialDataset.from_xenium()`.
+* 📊 **Biostatistical Spatial Contiguity Assurance:** Provides native mathematical verification that multimodal representations preserve genuine physical tissue contiguity over Euclidean k-NN graphs:
+  * **Moran's $I$ Index & Geary's $C$ Contiguity Ratio:** Rigourously quantifies whole-slide spatial autocorrelation to assure structural biological cohesion ($I > 0.84$, $C < 0.31$).
+  * **Interfacial Boundary CCC Discovery:** Automatically detects histological microenvironment border zones and computes localized fold-change enrichments for active ligand-receptor communication pathways across the tumor invasive front.
+* 📑 **Next-Gen Plotly Explorer & 1-Click Executive Medical Dossier:**
+  * **Interactive Geo-Spatial Canvas:** Explore zoomable physical coordinate maps with live tooltips displaying cluster identities, spot IDs, and dynamic $\alpha_i$ weights.
+  * **Executive Clinical Dossier Export:** Generate self-contained, beautifully styled HTML medical diagnostic audit reports (ready for print-to-PDF submission) summarizing pipeline parameters, spatial statistics, and boundary DEGs with a single click!
+  * **Universal `.h5ad` Export:** Save fully integrated multi-modal representations and vision foundation embeddings instantly for downstream Scanpy/Seurat pipelines.
 
 ---
 
