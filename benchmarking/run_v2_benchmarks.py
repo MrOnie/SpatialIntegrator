@@ -152,9 +152,14 @@ def run_experiment_1_adaptive_consensus():
     labels = ['RNA-Only\n(Baseline)', r'Static V1' + '\n' + r'($\alpha=0.2$)', r'Static V1' + '\n' + r'($\alpha=0.5$)', r'Static V1' + '\n' + r'($\alpha=0.8$)', r'Adaptive V2' + '\n' + r'($\alpha_i$ Dynamic)']
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels, fontweight='semibold')
+    ax1.set_ylim(0, max(df['Morans_I']) * 1.35)
+    min_sil = min(df['Spatial_Silhouette'])
+    max_sil = max(df['Spatial_Silhouette'])
+    ax2.set_ylim(min_sil - 0.04, max_sil + (max_sil - min_sil) * 0.45)
+    
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', frameon=True, edgecolor='#cccccc')
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper center', ncol=2, frameon=True, edgecolor='#cccccc')
     
     plt.title("Experimental Verification: Static (V1) vs. Spatially Adaptive (V2) Multimodal Consensus\n(Human Infiltrating Ductal Carcinoma Array)", fontweight='bold', pad=15)
     plt.tight_layout()
@@ -273,8 +278,8 @@ def run_experiment_3_interfacial_boundary(ds):
         
     ax.set_xlabel(r"Interfacial Boundary Fold-Change Enrichment ($E_{\text{boundary}} / E_{\text{bulk}}$)", fontweight='bold', labelpad=10)
     ax.set_title("Automated Discovery of Tumor Invasive Front Interfacial Signaling Pathways\n(SpatialIntegrator V2 Adaptive Consensus Engine)", fontweight='bold', pad=15)
-    ax.legend(loc='lower right')
-    ax.set_xlim(0, max(scores) + 0.4)
+    ax.legend(loc='lower right', frameon=True, edgecolor='#cccccc')
+    ax.set_xlim(0, max(scores) * 1.25 + 0.3)
     plt.tight_layout()
     plt.savefig('results/fig3_v2_interfacial_boundary_ccc_enrichment.png', dpi=300)
     plt.close()

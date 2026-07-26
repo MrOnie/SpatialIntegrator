@@ -127,16 +127,20 @@ def score_boundary_ligand_receptor(adata: AnnData, cluster_key: str = 'multimoda
             
     adata.obs['is_domain_boundary'] = boundary_mask.astype(str)
     
-    # Identify top expression features or canonical canonical L-R proxy pairs
+    # Identify top expression features or canonical L-R proxy pairs
     gene_names = adata.var_names.tolist()
     matrix = adata.X
     if hasattr(matrix, "toarray"):
         matrix = matrix.toarray()
         
+    if np.min(matrix) < 0:
+        # Re-align scaled matrix to non-negative expression floor for valid biological enrichment ratios
+        matrix = matrix - np.min(matrix, axis=0)
+        
     boundary_mean = np.mean(matrix[boundary_mask], axis=0) if np.any(boundary_mask) else np.zeros(matrix.shape[1])
     bulk_mean = np.mean(matrix[~boundary_mask], axis=0) if np.any(~boundary_mask) else np.ones(matrix.shape[1]) + 1e-8
     
-    fold_changes = (boundary_mean + 1e-4) / (bulk_mean + 1e-4)
+    fold_changes = (boundary_mean + 0.5) / (bulk_mean + 0.5)
     top_indices = np.argsort(fold_changes)[::-1][:10]
     
     results = {
