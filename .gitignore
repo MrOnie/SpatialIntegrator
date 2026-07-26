@@ -1,6 +1,8 @@
 # -----------------------------------------------------------------------------
-# LaTeX Auxiliary & Build Files
+# LaTeX Auxiliary & Build Files & Manuscript Folders
 # -----------------------------------------------------------------------------
+manuscript/
+manuscript_v2/
 *.aux
 *.out
 *.toc
