@@ -139,7 +139,7 @@ def run_multiorgan_benchmark():
             traceback.print_exc()
             
     df_results = pd.DataFrame(results)
-    csv_out = "results/multi_organ_benchmark.csv"
+    csv_out = "results/table2_multiorgan_benchmark_summary.csv"
     df_results.to_csv(csv_out, index=False)
     print("\n" + "="*80)
     print(f"MULTI-ORGAN BENCHMARK SUMMARY TABLE SAVED TO {csv_out}:")
@@ -184,7 +184,7 @@ def run_multiorgan_benchmark():
         autolabel(rects3)
         
         plt.tight_layout()
-        fig_path = "results/fig5_multiorgan_comparison.png"
+        fig_path = "results/fig4_multiorgan_contiguity_comparison.png"
         plt.savefig(fig_path, dpi=300, bbox_inches='tight')
         plt.close()
         print(f"Figure saved to {fig_path}")

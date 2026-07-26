@@ -1,6 +1,0 @@
-Organ System,Dataset ID,Spots,RNA Domains,RNA SSS,ViT Domains,ViT SSS,Phikon Domains,Phikon SSS
-Human Breast Cancer,V1_Breast_Cancer_Block_A_Section_1,2688,14,-0.0792,20,0.16,23,0.1698
-Human Lymph Node,V1_Human_Lymph_Node,4035,10,-0.2531,22,0.1139,24,0.194
-Human Brain Cortex,V1_Human_Brain_Section_1,4910,11,-0.1268,20,0.0963,19,0.1596
-Adult Mouse Brain,V1_Adult_Mouse_Brain,2702,18,-0.1385,19,0.1487,22,0.1804
-Human Heart,V1_Human_Heart,4247,11,-0.1401,18,0.1219,25,0.1566

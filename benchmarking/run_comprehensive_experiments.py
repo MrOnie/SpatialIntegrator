@@ -1,5 +1,7 @@
 import os
 import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import matplotlib.pyplot as plt
 import scanpy as sc
 import squidpy as sq
@@ -121,14 +123,14 @@ def main():
     # Save results table
     df_res = pd.DataFrame(results)
     df_res = df_res.sort_values(by='Spatial_Silhouette', ascending=False)
-    df_res.to_csv('results/experiment_summary_table.csv', index=False)
+    df_res.to_csv('results/table1_breast_cancer_grid_search.csv', index=False)
     print("\n" + "="*70)
     print("SUMMARY OF EXPERIMENTAL RESULTS:")
     print(df_res[['Model', 'Patch_Size', 'Alpha', 'Spatial_Silhouette', 'Num_Clusters']].to_string(index=False))
     print("="*70)
     
     # Export LaTeX Table Snippet
-    with open('results/latex_table.tex', 'w') as f:
+    with open('results/table1_breast_cancer_grid_search.tex', 'w') as f:
         f.write("\\begin{table}[h!]\n\\centering\n\\begin{tabular}{l c c c c}\n\\hline\n")
         f.write("\\textbf{Model} & \\textbf{Patch Size (px)} & \\textbf{Alpha (RNA Weight)} & \\textbf{Spatial Silhouette} & \\textbf{Clusters} \\\\\\hline\n")
         for _, row in df_res.iterrows():
@@ -137,8 +139,8 @@ def main():
         f.write("\\caption{Quantitative comparison of spatial domain coherence across foundation models, morphological field of views, and modality weighting architectures.}\n")
         f.write("\\label{tab:benchmark_results}\n\\end{table}\n")
 
-    # FIGURE 3: Bar Chart of Model Coherence across Alphas (for 224px as standard reference)
-    print("\nGenerating Figure 3 (Model & Alpha Sensitivity)...")
+    # FIGURE 1: Bar Chart of Model Coherence across Alphas (for 224px as standard reference)
+    print("\nGenerating Figure 1 (Model & Alpha Sensitivity)...")
     plt.figure(figsize=(10, 6))
     df_chart = df_res[df_res['Patch_Size'].isin(['224', '336', 'N/A'])].copy()
     
@@ -165,11 +167,11 @@ def main():
     plt.grid(True, linestyle=':', alpha=0.6)
     plt.legend(fontsize=11)
     plt.tight_layout()
-    plt.savefig('results/fig3_model_alpha_comparison.png', dpi=300)
+    plt.savefig('results/fig1_model_sensitivity_analysis.png', dpi=300)
     plt.close()
     
-    # FIGURE 4: Spatial Visual Comparison Grid (RNA vs Best ViT vs Best Phikon)
-    print("Generating Figure 4 (Spatial Domain Grid Comparison)...")
+    # FIGURE 2: Spatial Visual Comparison Grid (RNA vs Best ViT vs Best Phikon)
+    print("Generating Figure 2 (Spatial Domain Grid Comparison)...")
     fig, axs = plt.subplots(1, 3, figsize=(20, 6))
     
     sq.pl.spatial_scatter(adata, color='rna_leiden', ax=axs[0], title=f"RNA-Only Baseline\n(Sil: {sil_rna:.3f})")
@@ -179,7 +181,7 @@ def main():
         sq.pl.spatial_scatter(adata, color=best_phikon_key, ax=axs[2], title=f"Phikon Histopathology (Best Config)\n(Sil: {best_phikon_score:.3f})")
         
     plt.tight_layout()
-    plt.savefig('results/fig4_spatial_domains_grid.png', dpi=300)
+    plt.savefig('results/fig2_spatial_domain_maps_comparison.png', dpi=300)
     plt.close()
     
     print("\nAll extensive benchmarking experiments completed successfully!")

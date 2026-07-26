@@ -1,5 +1,7 @@
 import os
 import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import matplotlib.pyplot as plt
 import scanpy as sc
 import squidpy as sq
@@ -73,7 +75,7 @@ def main():
     rank_key = f'rank_genes_{model_name}_{patch_size}'
     sc.tl.rank_genes_groups(adata_res, key_added, method='wilcoxon', key_added=rank_key)
     
-    print("8. Plotting Biomarker Dotplot (Figure 2)...")
+    print("8. Plotting Biomarker Dotplot (Figure 3)...")
     # Set up high resolution figure formatting
     plt.rcParams.update({'font.size': 11, 'font.family': 'sans-serif'})
     dp = sc.pl.rank_genes_groups_dotplot(
@@ -85,11 +87,10 @@ def main():
         return_fig=True
     )
     
-    dp.savefig('results/figura_2_marcadores_224.png', bbox_inches='tight', dpi=300)
-    dp.savefig('results/fig2_biomarkers_phikon.png', bbox_inches='tight', dpi=300)
+    dp.savefig('results/fig3_biomarker_deg_validation_dotplot.png', bbox_inches='tight', dpi=300)
     plt.close()
     
-    print("Figure successfully saved to results/figura_2_marcadores_224.png!")
+    print("Figure successfully saved to results/fig3_biomarker_deg_validation_dotplot.png!")
 
 if __name__ == '__main__':
     main()

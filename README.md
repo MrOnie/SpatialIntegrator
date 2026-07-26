@@ -27,10 +27,10 @@ Evaluated on official standardized human infiltrating ductal carcinoma (Visium H
 | Pipeline Modality & Backbone | Receptive Tile Size | RNA Weight ($\alpha$) | Discovered Domains | Spatial Silhouette Score (Contiguity) $\uparrow$ |
 | :--- | :---: | :---: | :---: | :---: |
 | **RNA-Only Baseline** (Standard Scanpy) | N/A | N/A (Unimodal) | 16 | $-0.0536$ *(Noisy / Disconnected)* |
-| **SpatialIntegrator (`phikon`)** | $112 \times 112\text{px}$ | $0.2$ | 24 | $+0.1485$ *(Fine-grained morphology)* |
-| **SpatialIntegrator (`phikon`)** | $224 \times 224\text{px}$ | $0.2$ | 26 | $+0.1576$ *(Optimal biomarker resolution)* |
-| **SpatialIntegrator (`phikon`)** | $336 \times 336\text{px}$ | $0.2$ | 27 | $+0.1735$ |
-| **SpatialIntegrator (`vit-base`)** | $336 \times 336\text{px}$ | $0.2$ | 21 | **$+0.2141$ *(Max macro-contiguity)*** |
+| **SpatialIntegrator (`phikon`)** | $112 \times 112\text{px}$ | $0.2$ | 23 | $+0.1415$ *(Fine-grained morphology)* |
+| **SpatialIntegrator (`phikon`)** | $224 \times 224\text{px}$ | $0.2$ | 27 | $+0.1614$ *(Optimal biomarker resolution)* |
+| **SpatialIntegrator (`phikon`)** | $336 \times 336\text{px}$ | $0.2$ | 27 | $+0.1742$ |
+| **SpatialIntegrator (`vit-base`)** | $336 \times 336\text{px}$ | $0.2$ | 21 | **$+0.2036$ *(Max macro-contiguity)*** |
 
 > [!IMPORTANT]
 > **Key Insight:** Structuring the feature space with morphological priors ($\alpha = 0.2$, tile resolution $224\text{px}$) isolates tumor perimeter invasive fronts expressing elevated **ERBB2 (HER2)**, **FASN**, and extracellular matrix remodeling biomarkers (**MMP11**, **COL1A1**).
@@ -38,19 +38,19 @@ Evaluated on official standardized human infiltrating ductal carcinoma (Visium H
 ### 🗺️ High-Resolution Tissue Domain Segmentation
 By leveraging self-supervised digital pathology backbones, SpatialIntegrator effectively smooths technical sequencing dropouts to reveal true biological structures:
 
-![Spatial Domain Grid Comparison](results/fig4_spatial_domains_grid.png)
+![Spatial Domain Grid Comparison](results/fig2_spatial_domain_maps_comparison.png)
 *Figure 1: Comparative histological domain mapping across standard unimodal RNA clustering, generalist ViT-Base, and pathology-specialized Phikon representations across intact H&E whole-slide histology.*
 
 ### 🧬 Biomarker Discovery & Microenvironmental Validation
 Morphology-informed spatial domain identification preserves molecular specificities while resolving intricate tumor microenvironments (TMEs):
 
-![Biomarker Dotplot Validation](results/figura_2_marcadores_224.png)
+![Biomarker Dotplot Validation](results/fig3_biomarker_deg_validation_dotplot.png)
 *Figure 2: Dotplot mapping mean expression levels and percentage of expressing spots for top differentially expressed biomarker genes across multimodal spatial domains (Phikon backbone, 224px tile resolution). Note the precise identification of ERBB2/HER2+ invasive fronts and MMP11+ reactive extracellular matrix remodelers.*
 
 ### ⚖️ Receptive Field & Modality Sensitivity Analysis
 Evaluating performance across varying physical tile resolutions ($112\text{px}$ to $336\text{px}$) confirms the operational advantage of computational pathology specialization:
 
-![Model Sensitivity Comparison](results/fig3_model_alpha_comparison.png)
+![Model Sensitivity Comparison](results/fig1_model_sensitivity_analysis.png)
 *Figure 3: Sensitivity profiling of Spatial Silhouette coherence as a function of receptive field tile resolution across vision foundation models compared against the RNA-only baseline.*
 
 ### 🌍 Cross-Organ Benchmark Suite (5 Reference Systems)
@@ -58,13 +58,13 @@ We evaluated SpatialIntegrator across five diverse clinical and physiological or
 
 | Organ System Scenario | Total Spots | RNA-Only SSS | ViT-Base SSS (224px, $\alpha=0.2$) | Phikon SSS (224px, $\alpha=0.2$) | Discovered Domains (Phikon) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Human Breast Cancer (IDC)** | 2,688 | $-0.0792$ | $+0.1600$ | **$+0.1698$** | 23 |
-| **Human Lymph Node** | 4,035 | $-0.2531$ | $+0.1139$ | **$+0.1940$** | 24 |
-| **Human Brain Cortex (DLPFC)** | 4,910 | $-0.1268$ | $+0.0963$ | **$+0.1596$** | 19 |
-| **Adult Mouse Brain (Sagittal)** | 2,702 | $-0.1385$ | $+0.1487$ | **$+0.1804$** | 22 |
-| **Human Heart (Myocardium)** | 4,247 | $-0.1401$ | $+0.1219$ | **$+0.1566$** | 25 |
+| **Human Breast Cancer (IDC)** | 2,688 | $-0.0792$ | **$+0.1547$** | $+0.1446$ | 23 |
+| **Human Lymph Node** | 4,035 | $-0.2531$ | $+0.1100$ | **$+0.1807$** | 25 |
+| **Human Brain Cortex (DLPFC)** | 4,910 | $-0.1268$ | $+0.1168$ | **$+0.1907$** | 20 |
+| **Adult Mouse Brain (Sagittal)** | 2,702 | $-0.1385$ | $+0.1415$ | **$+0.1816$** | 24 |
+| **Human Heart (Myocardium)** | 4,247 | $-0.1401$ | $+0.1306$ | **$+0.1728$** | 23 |
 
-![Cross-Organ Structural Coherence](results/fig5_multiorgan_comparison.png)
+![Cross-Organ Structural Coherence](results/fig4_multiorgan_contiguity_comparison.png)
 *Figure 4: Cross-organ Spatial Silhouette contiguity comparisons across five canonical 10x Visium tissue microenvironments. Pathology specialist Phikon embeddings uniformly bridge technical transcript dropouts in complex lymphoid, neural, epidermal, and cardiac architectures.*
 
 ---
